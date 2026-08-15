@@ -4,3 +4,4 @@ client_secret.json
 .venv/
 __pycache__/
 .pytest_cache/
+token.json
