@@ -36,18 +36,26 @@ st.markdown(
         margin-bottom: 1.5rem;
     }
     .checkpoint-card {
-        background-color: #FFF8E1;
-        border-left: 5px solid #FFA000;
+        background-color: #EEF2FF;
+        border-left: 5px solid #4F46E5;
         padding: 1.2rem;
         border-radius: 8px;
         margin-bottom: 1.5rem;
     }
+    .checkpoint-card h3 {
+        color: #3730A3;
+        margin-top: 0;
+    }
     .published-card {
-        background-color: #E8F5E9;
-        border-left: 5px solid #2E7D32;
+        background-color: #ECFDF5;
+        border-left: 5px solid #059669;
         padding: 1.2rem;
         border-radius: 8px;
         margin-bottom: 1.5rem;
+    }
+    .published-card h3 {
+        color: #047857;
+        margin-top: 0;
     }
     .stButton>button {
         font-weight: 600;
@@ -57,6 +65,22 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# Load secrets from Streamlit Cloud without changing the existing app architecture.
+# Local development continues to use the existing client_secret.json when present.
+if "installed" in st.secrets:
+    oauth_secret_config = {"installed": dict(st.secrets["installed"])}
+    secret_file_path = Path("client_secret.json")
+    try:
+        secret_file_path.write_text(json.dumps(oauth_secret_config, indent=2), encoding="utf-8")
+    except OSError:
+        # Keep the existing local-file behavior if the runtime cannot write the file.
+        pass
+
+# Make root-level Streamlit secrets available to existing code that reads os.environ.
+for _secret_key, _secret_value in st.secrets.items():
+    if isinstance(_secret_value, str):
+        os.environ.setdefault(_secret_key, _secret_value)
 
 settings = get_settings()
 
