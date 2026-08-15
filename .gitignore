@@ -9,3 +9,4 @@ data/outputs/*
 !data/outputs/.gitkeep
 .pytest_cache/
 client_secret.json
+token.json
